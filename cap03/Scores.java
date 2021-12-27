@@ -10,6 +10,42 @@ public class Scores {
 		numEntries = 0;
 	}
 
+	public	void add(GameEntry e) {
+		int newScore = e.getScore();
+		
+		if(numEntries == maxEntries) {
+			if(newScore <= entries[numEntries-1].getScore()) {
+				return;
+			}
+		}
+		else {
+			numEntries++;
+		}
+		
+		int i = numEntries - 1;
+		for(; (i >= 1) && (newScore > entries[i-1].getScore()); i--) {
+			entries[i] = entries[i - 1];
+		}
+		entries[i] = e;
+	}
+	
+	public GameEntry remove(int i) throws IndexOutOfBoundsException{
+		
+		if((i < 0) || (i >= numEntries)) {
+			throw new IndexOutOfBoundsException("Invalid index: " + i);
+		}
+		
+		GameEntry temp = entries[i];
+		
+		for(int j = i; j < numEntries - 1; j++) {
+			entries[j] = entries[j+1];
+		}
+		entries[numEntries - 1] = null;
+		numEntries--;
+		return temp;
+	}
+	
+
 	public String toString() {
 		String s = "[";
 		for (int i = 0; i < numEntries; i++) {
